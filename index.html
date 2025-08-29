@@ -22,7 +22,14 @@
   </div>
 </body>
 <script>
-
+  // 전체화면
+  function FullScreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  }
   // 시계 함수
   function startClock(sel) {
     const yoil = ['일', '월', '화', '수', '목', '금', '토'];
@@ -46,7 +53,7 @@
   // === 순환 대상 페이지 ===
   const ROTATION_PAGES = [
     '생산현황웰딩공정.html',
-    '재고현황.html'
+    '불량현황.html'
   ];
 
   let rotIdx = 0;       // 다음에 보여줄 페이지 인덱스
