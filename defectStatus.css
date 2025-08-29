@@ -1,0 +1,14 @@
+.defectStatusContainer {
+  display: flex;
+  flex-flow: 1;
+}
+
+.graphWrap1{
+  
+}
+
+.tableTitle {
+  font-size: 16px;
+  color: #cfe9ff;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,84 @@
+/* 재고현황 */
+
+:root {
+  --panel: rgba(15, 24, 58, 0.55);
+  --panel-border: rgba(255, 255, 255, 0.12);
+}
+
+.tableWrap {
+  width: 98%;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  background: var(--panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.tableWrap p {
+  width: 98%;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #cfe9ff;
+  text-align: left;
+}
+
+.inventoryTable {
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+}
+
+.inventoryTable thead th {
+  height: 50px;
+  min-height: 43px;
+  max-height: 70px;
+  border: 2px solid var(--panel-border);
+  background-color: #071436;
+  color: #39bdf7;
+  text-align: center;
+  font-size: 18px;
+}
+
+.inventoryTable tbody td,
+.inventoryTable tfoot td {
+  height: 40px;
+  min-height: 40px;
+  max-height: 70px;
+  border: 2px solid var(--panel-border);
+  text-align: center;
+  font-size: 17px;
+}
+
+.inventoryTable tbody tr:nth-of-type(2n) {
+  background-color: rgba(7, 20, 54, 0.5);
+}
+
+/*
+  .inventoryTable td.num,
+  .inventoryTable th.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+  }
+*/
+.danger {
+  color: var(--danger);
+  font-weight: 700
+}
+
+
+
+.inventoryTable tfoot td {
+  font-weight: 700;
+  height: 50px;
+  min-height: 43px;
+  max-height: 70px;
+  border-top: 2px solid var(--bd);
+  background-color: #071436;
+  color: #39bdf7;
+  font-size: 18px;
+}

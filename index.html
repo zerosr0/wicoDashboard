@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modalStyle.css">
+  <link rel="stylesheet" href="inventoryStatus.css">
+  <link rel="stylesheet" href="defectAnalyze.css">
+  <link rel="stylesheet" href="workStatus.css">
+  <link rel="stylesheet" href="lnb.css">
+  <title>위니코니 작업 현황판</title>
+</head>
+
+<body>
+  <div class="container">
+    <header id="lnb"></header>
+    <div id="now"></div>
+    <div class="now"></div>
+    <main id="frame"></main>
+  </div>
+</body>
+<script>
+
+  // 시계 함수
+  function startClock(sel) {
+    const yoil = ['일', '월', '화', '수', '목', '금', '토'];
+    const pad = n => String(n).padStart(2, '0');
+    function render() {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      const d = new Date();
+      const y = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate();
+      const w = yoil[d.getDay()];
+      const h24 = d.getHours(), ampm = h24 < 12 ? '오전' : '오후';
+      const h12 = (h24 % 12) || 12;
+      el.textContent =
+        `${y}. ${m}. ${day} (${w}) ${ampm} ${pad(h12)}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+    render();
+    setInterval(render, 1000);
+  }
+
+
+  // === 순환 대상 페이지 ===
+  const ROTATION_PAGES = [
+    '생산현황웰딩공정.html',
+    '재고현황.html'
+  ];
+
+  let rotIdx = 0;       // 다음에 보여줄 페이지 인덱스
+  let rotTimer = null;  // setInterval 핸들
+  const ROTATION_SEC = 10; // 10초 간격
+
+  // #frame에 1개 페이지 로드 + LNB 활성 표시
+  async function showPage(file) {
+    // (경로 정리: components/ 접두어 쓰는 경우 아래 한 줄로 정규화)
+    const clean = file.replace(/^\/?components\/?/, '');
+    await loadInto('#frame', clean);     // <- 너의 로더 사용
+    setActiveLnb(clean);                 // <- LNB 파란색 표시
+  }
+
+  // 한 번 순환(다음 페이지 보여주기)
+  async function rotateOnce() {
+    await showPage(ROTATION_PAGES[rotIdx]);
+    rotIdx = (rotIdx + 1) % ROTATION_PAGES.length;
+  }
+
+  // 자동 순환 시작/중지
+  function startAutoRotate(sec = ROTATION_SEC) {
+    stopAutoRotate();
+    rotateOnce();                        // 즉시 1회 표시
+    rotTimer = setInterval(rotateOnce, sec * 1000);
+  }
+  function stopAutoRotate() {
+    if (rotTimer) { clearInterval(rotTimer); rotTimer = null; }
+  }
+
+  // LNB를 수동으로 클릭하면 그 페이지부터 다시 순환
+  document.addEventListener('click', async (e) => {
+    const a = e.target.closest('#lnb a');
+    if (!a) return;
+    e.preventDefault();
+
+    const file = (a.getAttribute('href') || '').split('/').pop();
+    await showPage(file);
+
+    const i = ROTATION_PAGES.indexOf(file);
+    rotIdx = (i >= 0) ? (i + 1) % ROTATION_PAGES.length : 0; // 다음부터 이어서
+    startAutoRotate(ROTATION_SEC); // 타이머 리셋
+  });
+
+  // 초기 시작(lnb와 첫 화면 로드 이후 호출)
+  window.addEventListener('load', () => startAutoRotate(ROTATION_SEC));
+  async function loadInto(selector, file) {
+    const res = await fetch(`components/${file}`);
+    const html = await res.text();
+    document.querySelector(selector).innerHTML = html;
+  }
+  function setActiveLnb(file) {
+    const name = file.split('/').pop();
+    document.querySelectorAll('#lnb a').forEach(a => {
+      const aName = (a.getAttribute('href') || '').split('/').pop();
+      const on = aName === name;
+      a.classList.toggle('is-active', on);
+      a.closest('li')?.classList.toggle('is-active', on);
+    });
+  }
+
+
+
+
+
+  // 컴포넌트 로더
+  async function loadInto(selector, file) {
+    const res = await fetch(`components/${file}`);
+    if (!res.ok) throw new Error(`불러오기 실패: ${file}`);
+    const html = await res.text();
+    document.querySelector(selector).innerHTML = html;
+  }
+
+  // 초기 로드
+  (async () => {
+    await loadInto('#lnb', 'lnb.html');
+    await loadInto('#frame', '생산현황웰딩공정.html');
+    startClock('#now');
+  })();
+
+  // LNB 클릭 → frame 교체
+  document.addEventListener('click', async (e) => {
+    const a = e.target.closest('#lnb a');
+    if (!a) return;
+    e.preventDefault();
+    const file = a.getAttribute('href');
+    await loadInto('#frame', file);
+    startClock('#now');
+  });
+
+  const lnb = document.getElementById('lnb');
+  const frame = document.getElementById('frame');
+
+  document.addEventListener('click', (e) => {
+    const toggleBtns = e.target.closest('#lnb .toggleBtns');
+    if (!toggleBtns) return;
+    lnb.classList.toggle('on');
+    frame.classList.toggle('on');
+    // 접근성(선택)
+    toggleBtns.setAttribute('aria-expanded', String(lnb.classList.contains('on')));
+  });
+
+
+
+
+  // 기어 버튼 전역 위임(lnb가 나중에 붙어도 OK)
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('#btnSettings');
+    if (!btn) return;
+    e.preventDefault();
+    const modal = await ensureSettingsModal(); // 없으면 로드
+    openSettingsModal(modal);
+  });
+
+  // 이미 있으면 그대로, 없으면 components/settingPopUp.html 주입
+  async function ensureSettingsModal() {
+    let modal = document.getElementById('settingsModal'); // ← 새 ID
+    if (modal) return modal;
+
+    const res = await fetch('components/settingPopUp.html', { cache: 'no-store' });
+    if (!res.ok) throw new Error('설정 팝업 로드 실패');
+    const html = await res.text();
+
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html.trim();                   // settingPopUp.html은 모달 마크업만 포함
+    modal = tmp.querySelector('#settingsModal') || tmp.firstElementChild;
+    document.body.appendChild(modal);
+
+    bindSettingsModal(modal);                      // 이벤트/상태 바인딩
+    return modal;
+  }
+
+  // 모달 열기/닫기
+  function openSettingsModal(modal) {
+    const range = modal.querySelector('#interval');
+    const out = modal.querySelector('#intervalOut');
+    if (range && out) out.textContent = range.value + 's';
+    modal.setAttribute('aria-hidden', 'false');
+  }
+  function closeSettingsModal(modal) {
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  // 모달 내부 이벤트/저장 로직(1회 바인딩)
+  function bindSettingsModal(modal) {
+    const autoPlay = modal.querySelector('#autoPlay');
+    const interval = modal.querySelector('#interval');
+    const intervalOut = modal.querySelector('#intervalOut');
+    const menuGrid = modal.querySelector('#menuGrid');
+    const selectAll = modal.querySelector('#selectAll');
+    const clearAll = modal.querySelector('#clearAll');
+    const apply = modal.querySelector('#apply');
+    const reset = modal.querySelector('#reset');
+
+    // 닫기: 오버레이/닫기버튼/ESC
+    modal.addEventListener('click', (e) => {
+      if (e.target.dataset.close) closeSettingsModal(modal);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeSettingsModal(modal);
+    });
+
+    // 슬라이더 출력 동기화
+    interval?.addEventListener('input', () => (intervalOut.textContent = interval.value + 's'));
+
+    // 전체선택/해제
+    selectAll?.addEventListener('click', () => menuGrid.querySelectorAll('input[type="checkbox"]').forEach(c => (c.checked = true)));
+    clearAll?.addEventListener('click', () => menuGrid.querySelectorAll('input[type="checkbox"]').forEach(c => (c.checked = false)));
+
+    // 초기화
+    reset?.addEventListener('click', () => {
+      if (autoPlay) autoPlay.checked = true;
+      if (interval) { interval.value = 10; interval.dispatchEvent(new Event('input')); }
+      menuGrid.querySelectorAll('input[type="checkbox"]').forEach(c => (c.checked = ['prod-print', 'prod-cut', 'prod-weld'].includes(c.value)));
+    });
+
+    // 적용(저장 후 닫기) — 필요하면 startRotation(s) 연결
+    apply?.addEventListener('click', () => {
+      const s = {
+        autoplay: !!(autoPlay?.checked),
+        interval: +(interval?.value ?? 10),
+        menus: [...menuGrid.querySelectorAll('input[type="checkbox"]')].filter(c => c.checked).map(c => c.value)
+      };
+      localStorage.setItem('winnie.dashboard.settings', JSON.stringify(s));
+      closeSettingsModal(modal);
+    });
+  }
+</script>
+
+</html>

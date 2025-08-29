@@ -1,0 +1,75 @@
+/* 왼쪽 메뉴 */
+#lnb {
+  position: fixed;
+  z-index: 2;
+  width: 250px;
+  height: 100vh;
+  background-color: #292929;
+  padding: 10px 10px 20px 10px;
+  transition: .3s;
+}
+
+#lnb.on {
+  width: 50px;
+}
+
+.settingBtns {
+  height: 45px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#lnb.on .settingBtns {
+  height: 150px;
+  gap: 20px;
+  flex-direction: column;
+  align-items: space-evenly;
+  justify-content: center;
+}
+
+#lnb.on .settingBtns .toggleBtns .closeBtn {
+  display: none;
+}
+
+.settingBtns .setting,
+.settingBtns .fullScreen,
+.settingBtns .closeBtn,
+.settingBtns .openBtn {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.settingBtns .openBtn {
+  display: none;
+}
+
+#lnb.on .settingBtns .toggleBtns .openBtn {
+  display: block;
+}
+
+#lnb ul {
+  width: 100%;
+  height: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex-flow: 1;
+}
+
+#lnb.on ul {
+  display: none;
+}
+
+#lnb ul li {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}

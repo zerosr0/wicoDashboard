@@ -1,0 +1,51 @@
+:root {
+  --panel: rgba(15, 24, 58, 0.55);
+  --panel-border: rgba(255, 255, 255, 0.12);
+}
+
+.defectAnalyze {
+  position: relative;
+  width: 98%;
+  margin-left: 1%;
+}
+
+.defectAnalyzeTable {
+  width: 100%;
+  height: 140px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.defectAnalyzeTable th {
+  background-color: #071436;
+  border: 2px solid var(--panel-border);
+}
+
+.defectAnalyzeTable td {
+  border: 2px solid var(--panel-border);
+  text-align: center;
+  font-size: 50px;
+  color: red;
+}
+
+.defectAnalyzeGraph {
+  width: 100%;
+  border: none;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.tableTitle {
+  font-size: 16px;
+  color: #cfe9ff;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,59 @@
+<div id="settingsModal" class="modal" aria-hidden="true">
+  <div class="modalOverlay" data-close="true"></div>
+  <div class="modalDialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <header class="modalHeader">
+      <h3 id="settingsTitle">현황판 설정</h3>
+      <button class="modalClose" data-close="true" aria-label="닫기">×</button>
+    </header>
+
+    <section class="modalSection">
+      <h4>자동 전환</h4>
+      <label class="switch">
+        <input type="checkbox" id="autoPlay" checked>
+        <span class="switchTrack"><span class="switchThumb"></span></span>
+        <span class="switchLabel">자동 전환 사용</span>
+      </label>
+
+      <div class="range">
+        <label for="interval">전환 간격(초)</label>
+        <input type="range" id="interval" min="3" max="60" step="1" value="10">
+        <output id="intervalOut" for="interval">10s</output>
+      </div>
+    </section>
+
+    <section class="modalSection">
+      <h4>띄울 메뉴</h4>
+      <div class="actions">
+        <button type="button" class="btn btnGhost" id="selectAll">전체선택</button>
+        <button type="button" class="btn btnGhost" id="clearAll">전체해제</button>
+      </div>
+
+      <!-- 필요에 맞춰 항목 추가/정리 -->
+      <div class="chipGrid" id="menuGrid">
+        <label class="chip"><input type="checkbox" value="prod-print" checked><span>생산현황 인쇄공정</span></label>
+        <label class="chip"><input type="checkbox" value="prod-cut" checked><span>생산현황 재단공정</span></label>
+        <label class="chip"><input type="checkbox" value="prod-weld" checked><span>생산현황 웰딩공정</span></label>
+        <label class="chip"><input type="checkbox" value="stock"><span>불량현황</span></label>
+        <label class="chip"><input type="checkbox" value="equip-run"><span>재고현황</span></label>
+        <label class="chip"><input type="checkbox" value="work-print"><span>불량분석</span></label>
+        <label class="chip"><input type="checkbox" value="work-cut"><span>재고분석</span></label>
+        <label class="chip"><input type="checkbox" value="work-weld"><span>설비운전현황</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>생산현황</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>생산성분석</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>매출분석</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>설비가동분석</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>작업현황 인쇄공정</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>작업현황 재단공정</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>작업현황 웰딩공정</span></label>
+        <label class="chip"><input type="checkbox" value="incoming"><span>입출고현황</span></label>
+      </div>
+    </section>
+
+    <footer class="modalFooter">
+      <button type="button" class="btn btnGhost" id="reset">초기화</button>
+      <div class="spacer"></div>
+      <button type="button" class="btn btnGhost" data-close="true">취소</button>
+      <button type="button" class="btn btnPrimary" id="apply">적용</button>
+    </footer>
+  </div>
+</div>

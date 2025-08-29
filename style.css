@@ -1,0 +1,206 @@
+@charset 'utf-8';
+
+/* default 속성 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #4647a5 0%, #24376d 70%, #24376d 100%);
+}
+
+:root {
+  --borderStyle: 1px solid rgba(238, 238, 238, 0.5);
+  --panel: rgba(15, 24, 58, 0.55);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --danger: #ff0000;
+  --green: #0f6b2b;
+  --green-2: #0a4e1f;
+  --yellow: #fff36a;
+  --row-blue: #e9f0ff;
+}
+
+/* 모든 요소를 감싸는 요소 */
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+
+/* 오른쪽 메뉴화면 프레임 */
+#frame {
+  width: calc(100% - 250px);
+  height: 100%;
+  float: right;
+  transition: .5s;
+}
+
+#frame.on {
+  width: calc(100% - 50px);
+}
+
+/* 생산현황 부분 공통 속성 */
+.menuTitleWorkDate {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+}
+
+.logo img {
+  width: 150px;
+}
+
+h1 {
+  vertical-align: middle;
+}
+
+#now {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 330px;
+  height: 40px;
+  background: linear-gradient(to right, #60A5FA, #3B82F6);
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.now {
+  width: 330px;
+}
+
+/* 상단 제품정보 테이블 */
+.productInfo {
+  width: 98%;
+  height: 80px;
+  margin-left: 1%;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.productInfoTable {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 25px;
+}
+
+.productInfoTable tr td {
+  font-weight: 700;
+}
+
+.productInfoTable tr td:nth-of-type(2n - 1) {
+  background-color: #4C5062;
+  color: #39BDF7;
+}
+
+/* 하단 작업정보 */
+.workStatusDetails {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: calc(100vh - 250px);
+}
+
+.leftSideImage,
+.rightSideWorkPerformance {
+  width: 48%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.leftSideImage p,
+.rightSideWorkPerformance p {
+  width: 100%;
+  margin: 0 auto 15px;
+  font-size: 16px;
+  color: #cfe9ff;
+  text-align: left;
+}
+
+.leftSideImage img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.rightSideWorkPerformance table {
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+}
+
+.rightSideWorkPerformance thead tr th {
+  height: 50px;
+  min-height: 40px;
+  max-height: 70px;
+  border: 2px solid var(--panel-border);
+  background-color: #071436;
+  color: #39bdf7;
+  text-align: center;
+  font-weight: 700;
+}
+
+.rightSideWorkPerformance td {
+  height: 40px;
+  min-height: 40px;
+  max-height: 70px;
+  border: 2px solid var(--panel-border);
+  text-align: center;
+}
+
+.rightSideWorkPerformance tbody tr:nth-of-type(2n) {
+  background-color: rgba(7, 20, 54, 0.5);
+}
+
+@media (max-width: 1300px) {
+  .workStatusDetails {
+    flex-direction: column;
+    height: auto;
+    gap: 16px;
+  }
+
+  .leftSideImage,
+  .rightSideWorkPerformance {
+    width: 100%;
+  }
+}
